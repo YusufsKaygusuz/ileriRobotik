@@ -13,7 +13,7 @@
 ## 📚 İçindekiler
 | Hafta | Haftalık İçerik                                               |
 |-------|--------------------------------------------------------------|
-| 📆 Week 2 | [**LDR Sensörlerinin Analog Çıkışları ile Servo Motor Kontrolü**](#week-2-sensorlerin-analog-çıkışları-ile-servo-motor-kontrolü) |
+| 📆 Week 2 | [**LDR Sensörlerinin Analog Çıkışları ile Servo Motor Kontrolü**](#week-2-ldr-sensorlerin-analog-çıkışları-ile-servo-motor-kontrolü) |
 
 
 ## Week 2: LDR Sensörlerinin Analog Çıkışları ile Servo Motor Kontrolü
