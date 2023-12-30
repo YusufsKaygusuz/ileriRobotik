@@ -14,6 +14,7 @@
 | Hafta | Haftalık İçerik                                               |
 |-------|--------------------------------------------------------------|
 | 📆 Week 2 | [**LDR Sensörlerinin Analog Çıkışları ile Servo Motor Kontrolü**](#week-2-ldr-sensörlerinin-analog-çıkışları-ile-servo-motor-kontrolü) |
+| 📆 Week 3 | [**Mesafe ve IMU Sensörleri ile Servo ve DC Motor Kontrolü**](#week-3-mesafe-ve-imu-sensörleri-ile-servo-ve-dc-motor-kontrolü) |
 
 ## Week 2: LDR Sensörlerinin Analog Çıkışları ile Servo Motor Kontrolü
 
@@ -66,3 +67,6 @@ myservo.write(pos);
 delay(5);
 }
 ```
+
+
+## Week 3: Mesafe ve IMU Sensörleri ile Servo ve DC Motor Kontrolü
