@@ -6,7 +6,6 @@
 
 Servo myservo;
 int pos=0;
-int pos=0; 
 long sure;
 long uzaklik;
 
