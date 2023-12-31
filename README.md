@@ -130,25 +130,23 @@ delay(5);
 
 
 ```ino
-#include <Deneyap_Servo.h>
+#include <Deneyap_Servo.h> // Servo motor kütüphanesinin programa eklenmesi
 
-#define SERVOPIN1 D0       // Servo motor bağlantısı
-#define trig_pin D14        // Ultrasonik sensör trigger pin bağlantısı
-#define echo_pin D15        // Ultrasonik sensör echo pin bağlantısı
-#define buzzer_pin D1       // Zil bağlantısı
+#define trig_pin D14       // Ultrasonik sensör trigger pin bağlantısı
+#define echo_pin D15       // Ultrasonik sensör echo pin bağlantısı
+#define buzzer_pin D1      // Zil bağlantısı
+#define servo_pin D0       // Servo motor bağlantısı
 
 Servo myservo;
-int pos = 0;
-long sure;
-long uzaklik;
+int buzzer_threshold = 10;  // Uzaklık değeri bu değerin altındaysa buzzer'ı aktif et
 
 void setup()
 {
-    myservo.attach(SERVOPIN1);
     Serial.begin(9600);
     pinMode(trig_pin, OUTPUT);
     pinMode(echo_pin, INPUT);
     pinMode(buzzer_pin, OUTPUT);
+    myservo.attach(servo_pin);
 }
 
 void loop()
@@ -159,25 +157,29 @@ void loop()
     delayMicroseconds(10);
     digitalWrite(trig_pin, LOW);
 
-    sure = pulseIn(echo_pin, HIGH);
-    uzaklik = sure / 29.1 / 2;
+    // Gelen sinyalin echo pinine geliş süresinin tespiti
+    long sure = pulseIn(echo_pin, HIGH);
+
+    // Ses hızına göre uzaklığın hesaplanması (gidiş-geliş olduğu için 2’ye bölünmektedir.)
+    long uzaklik = sure / 29.1 / 2;
 
     Serial.print("Uzaklik: ");
     Serial.print(uzaklik);
     Serial.println(" CM");
+    delay(50);
 
-    pos = map(uzaklik, 0, 40, 0, 180); // Uzaklık değerini servo açısına dönüştür
-
-    if (uzaklik < 10)
-    {
+    // Belirli bir uzaklık altında ise buzzer'ı aktif et
+    if (uzaklik < buzzer_threshold) {
         digitalWrite(buzzer_pin, HIGH);
-        delay(500);  // Buzzer'ı yarım saniye boyunca açık tut
+    } else {
         digitalWrite(buzzer_pin, LOW);
     }
 
-    myservo.write(pos);
+    // Uzaklık değerine göre servo motoru kontrol et
+    int servo_position = map(uzaklik, 0, 40, 0, 180);
+    myservo.write(servo_position);
 
-    delay(1000);  // Örnek bir süre, uygulamanıza göre ayarlayın
+    delay(50);  // İhtiyaca göre ayarlayın
 }
 
 ```
