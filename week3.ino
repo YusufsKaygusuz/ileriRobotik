@@ -1,22 +1,24 @@
 #include <Deneyap_Servo.h>
-#define SERVOPIN1 D0 // servo motor bağlantısı
-#define trig_pin D14 // ultrasonik sensör trigger pin bağlantısı
-#define echo_pin D15 // ultrasonik sensör echo pin bağlantısı
-#define buzzer_pin D1 // zil bağlantısı
+
+#define SERVOPIN1 D0       // Servo motor bağlantısı
+#define trig_pin D14        // Ultrasonik sensör trigger pin bağlantısı
+#define echo_pin D15        // Ultrasonik sensör echo pin bağlantısı
+#define buzzer_pin D1       // Zil bağlantısı
 
 Servo myservo;
-int pos=0;
+int pos = 0;
 long sure;
 long uzaklik;
 
 void setup()
 {
     myservo.attach(SERVOPIN1);
-    Serial.begin(115200); // serial monitör üzerinde uzaklık değerini görmek için
-    pinMode(trig_pin, OUTPUT); // ultrasonik sensör trigger pinini çıkış olarak ayarlıyoruz
-    pinMode(echo_pin,INPUT);   // ultrasonik sensör echo pinini giriş olarak ayarlıyoruz
-    pinMode(buzzer_pin,OUTPUT); //zil pinini çıkış olarak ayarlıyoruz
+    Serial.begin(9600);
+    pinMode(trig_pin, OUTPUT);
+    pinMode(echo_pin, INPUT);
+    pinMode(buzzer_pin, OUTPUT);
 }
+
 void loop()
 {
     digitalWrite(trig_pin, LOW);
@@ -24,24 +26,24 @@ void loop()
     digitalWrite(trig_pin, HIGH);
     delayMicroseconds(10);
     digitalWrite(trig_pin, LOW);
-//gönderilen sinyalin echo pinine geliş süresinin tespiti
-sure = pulseIn(echo_pin, HIGH);
-//ses hızına göre uzaklığın hesaplanması (gidiş geliş olduğu için 2’ye bölünmektedir.) 
-uzaklik = sure /29.1/2;
 
-if(uzaklik < 10) //uzaklık değeri 10 cm’den küçükse zil aktif
-digitalWrite(buzzer_pin, HIGH);
-if(uzaklik >= 10) //uzaklık değeri 10 cm’den büyükse zil pasif
-digitalWrite(buzzer_pin, LOW);
+    sure = pulseIn(echo_pin, HIGH);
+    uzaklik = sure / 29.1 / 2;
 
-Serial.print("Uzaklık: ", uzaklik); //uzaklık değeri serial monitör ekranına yazdırılıyor.
-Serial.print(" CM");
+    Serial.print("Uzaklik: ");
+    Serial.print(uzaklik);
+    Serial.println(" CM");
 
+    pos = map(uzaklik, 0, 40, 0, 180); // Uzaklık değerini servo açısına dönüştür
 
-pos=uzaklik*(180/40);
-myservo.write(pos); //uzaklık değerine göre (max. 40 cm) ibrenin hareketinin sağlanması
+    if (uzaklik < 10)
+    {
+        digitalWrite(buzzer_pin, HIGH);
+        delay(500);  // Buzzer'ı yarım saniye boyunca açık tut
+        digitalWrite(buzzer_pin, LOW);
+    }
 
-delay(5);
+    myservo.write(pos);
+
+    delay(1000);  // Örnek bir süre, uygulamanıza göre ayarlayın
 }
-
-
