@@ -88,8 +88,7 @@ Bu kod, sensöre olan uzaklığı ölçmek, bu değere göre bir servo motorunun
 #define buzzer_pin D1 // zil bağlantısı
 
 Servo myservo;
-intpos=0;
-intpos=0; 
+int pos=0;
 long sure;
 long uzaklik;
 
