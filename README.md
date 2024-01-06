@@ -209,7 +209,7 @@ delay (10);
 <h3> Uygulama Projesi </h3>
 <img src="https://github.com/YusufsKaygusuz/ileriRobotik/assets/86704802/9923107e-d3d9-4c8a-9ec4-d7540b423df4" alt="ReLU" width="600"/>
 
-<p> Bu kod, iki servo motorunun hareketini analog sensörler (X ve Y değerleri) aracılığıyla takip eder ve bu sensör değerlerine bağlı olarak servo motorların pozisyonunu günceller. Aynı zamanda, bir anahtarın (SW_pin) durumunu izler; eğer anahtar aktifse, servo motorların hareket sürelerini dinamik olarak değiştirerek farklı hızlarda hareket etmelerini sağlar. Bu sayede, sistemin tepkisini ve çalışma süresini kullanıcının kontrolüne bırakır. </p>
+<p> Bu kod, iki servo motorunun hareketini analog sensörler (X ve Y değerleri) 🕹️ aracılığıyla takip eder ve bu sensör değerlerine bağlı olarak servo motorların pozisyonunu 🔄 günceller. Aynı zamanda, bir anahtarın (SW_pin) 🎛️ durumunu izler; eğer anahtar aktifse, servo motorların hareket sürelerini dinamik olarak değiştirerek farklı hızlarda hareket etmelerini sağlar. Bu sayede, sistemin tepkisini ve çalışma süresini kullanıcının kontrolüne bırakır 🎮. </p>
 
 <h3>Kodlar</h3>
 
@@ -273,6 +273,8 @@ delay (dly);
 ```
 
 <h3>IMU Sensörü ile Çift Servo Motor Konum Kontrolü</h3>
+Bu kod, LSM6DSM IMU sensöründen okunan verilere 📊 göre iki servo motorunun 🤖 dinamik olarak ayarlar. IMU sensöründen alınan ivme verileri 📏 kullanılarak x ve y eksenlerindeki açısal pozisyonlar 📐 hesaplanır ve bu pozisyonlara göre servo motorların 🎛️ pozisyonları güncellenir. Bu, örneğin bir dengeleme sistemi 🏗️ veya bir robotik uygulama için kullanılabilir. 🤹‍♂️
+
 <img src="https://github.com/YusufsKaygusuz/ileriRobotik/assets/86704802/fdd21e1c-9c13-4792-95ea-8068a023df7a" alt="ReLU" width="600"/>
 
 ```ino 
