@@ -15,6 +15,7 @@
 |-------|--------------------------------------------------------------|
 | 📆 Week 2 | [**LDR Sensörlerinin Analog Çıkışları ile Servo Motor Kontrolü**](#week-2-ldr-sensörlerinin-analog-çıkışları-ile-servo-motor-kontrolü) |
 | 📆 Week 3 | [**Mesafe ve IMU Sensörleri ile Servo ve DC Motor Kontrolü**](#week-3-mesafe-ve-imu-sensörleri-ile-servo-ve-dc-motor-kontrolü) |
+| 📆 Week 4 | [**Çift Servo ve Joyistik ile Motor Kontrol**](#week-4-çift-servo-ve-joyistik-ile-motor-kontrol) |
 
 ## Week 2: LDR Sensörlerinin Analog Çıkışları ile Servo Motor Kontrolü
 
@@ -135,3 +136,41 @@ void loop()
 }
 
 ```
+
+## Week 4: Çift Servo ve Joyistik ile Motor Kontrol
+Uygulama için gerekli Deneyap Geliştirme Kartı, servo motor ve kumanda kolu bağlantıları öncesi joyistik kontrolü denenmelidir.
+
+<h3>Joyistik Kontrolü için Kod</h3>
+
+```ino
+#include "deneyap.h"
+#define SW_pin D0
+#define X_pin A0
+#define Y_pin A1
+
+int X_Val, Y_Val, Dig_Val;
+
+void setup () {
+Serial.begin(115200);
+pinMode(SW_pin, INPUT_PULLUP);
+digitalWrite(SW_pin, HIGH);
+pinMode(X_pin, INPUT);
+pinMode(Y_pin, INPUT);
+}
+
+void loop () {
+X_Val = analogRead(X_pin);
+Y_Val = analogRead(Y_pin);
+Dig_Val =digitalRead(SW_pin);
+Serial.print("X_Val: ");
+Serial.println(X_Val);
+Serial.print("Y_Val: ");
+Serial.println(Y_Val);
+Serial.print("Dig_Val: ");
+Serial.println(Dig_Val); delay(100);
+}
+```
+
+
+
+
