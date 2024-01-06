@@ -142,6 +142,8 @@ Uygulama için gerekli Deneyap Geliştirme Kartı, servo motor ve kumanda kolu b
 
 <h3>Joyistik Kontrolü için Kod</h3>
 
+<img src="https://github.com/YusufsKaygusuz/ileriRobotik/assets/86704802/2853372c-685f-49af-a4a8-ebb34b402d1a" alt="ReLU" width="600"/>
+
 ```ino
 #include "deneyap.h"
 #define SW_pin D0
@@ -167,10 +169,106 @@ Serial.println(X_Val);
 Serial.print("Y_Val: ");
 Serial.println(Y_Val);
 Serial.print("Dig_Val: ");
-Serial.println(Dig_Val); delay(100);
+Serial.println(Dig_Val);
+delay(100);
 }
 ```
 
+<h3>Çift Servo Kullanım Pratiği </h3>
+<img src="https://github.com/YusufsKaygusuz/ileriRobotik/assets/86704802/deb530e1-40ff-41bc-8ba4-59f34800db08" alt="ReLU" width="600"/>
+
+```ino
+#include <Deneyap_Servo.h>
+#define SERVOPIN1 D14
+#define SERVOPIN2 D9
+
+Servo myservo1, myservo2;
+int pos=0;
+
+void setup() {
+myservo1.attach(SERVOPIN1);
+myservo2.attach(SERVOPIN2,1);
+}
+
+void loop() {
+
+for(pos=0;pos<=180;pos+=1)
+{ myservo1.write(pos);
+myservo2.write(pos);
+delay (10);
+ }
+for(pos=180;pos>=0;pos-=1){
+myservo1.write(pos);
+myservo2.write(pos);
+delay (10);
+}
+}
+```
+
+
+<h3> Uygulama Projesi </h3>
+<img src="https://github.com/YusufsKaygusuz/ileriRobotik/assets/86704802/9923107e-d3d9-4c8a-9ec4-d7540b423df4" alt="ReLU" width="600"/>
+
+<h3>Kodlar</h3>
+
+```ino
+#include "deneyap.h"
+#include <Deneyap_Servo.h>
+#define SERVOPIN1 D14
+#define SERVOPIN2 D9
+#define SW_pin D0
+#define X_pin A0
+#define Y_pin A1
+
+
+Servo myservo1, myservo2;
+int X_Val, Y_Val;
+int pos1=0, pos2=0;
+int dly = 10; intstp=1;
+int Dig_Val = 0;
+int teta1min=0;
+int teta1max=180;
+int teta2min=0;
+int teta2max=180;
+
+void setup() {
+myservo1.attach(SERVOPIN1);
+myservo2.attach(SERVOPIN2,1);
+pinMode(SW_pin, INPUT_PULLUP);
+digitalWrite(SW_pin, HIGH);
+pinMode(X_pin, INPUT);
+pinMode(Y_pin, INPUT);
+}
+
+void loop() {
+X_Val = analogRead(X_pin);
+Y_Val = analogRead(Y_pin);
+Dig_Val = digitalRead(SW_pin);
+if (Dig_Val<1) {
+if (dly==5)
+dly=10;
+else {
+if(dly==10)
+dly=20;
+else if(dly==20)
+dly=5;
+}
+delay (500);
+}
+if (X_Val<1000 && pos1>teta1min)
+pos1-=stp;
+
+if (X_Val>3000 && pos1<teta1max)
+pos1+=stp;
+if (Y_Val<1000 && pos2>teta2min)
+pos2-=stp;
+if (Y_Val>3000 && pos2<teta2max)
+pos2+=stp;
+myservo1.write(pos1);
+myservo2.write(pos2);
+delay (dly);
+}
+```
 
 
 
