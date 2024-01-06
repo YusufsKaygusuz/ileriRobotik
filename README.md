@@ -1,5 +1,7 @@
 # 🤖🦿 İleri Robotik 🤖🦾
 
+<p><strong>İleri Robotik Eğitmeni Yusuf Sami Kaygusuz tarafından oluşturuldu. Paydaşlar: </strong></p>
+
 <p align="center">
 <img src="https://github.com/YusufsKaygusuz/Deneyap_Software_Techn/assets/86704802/cd98b111-b66c-4ddb-b0c4-f62ce0ab8b46" alt="ReLU" width="150"/>
 <img src="https://github.com/YusufsKaygusuz/Deneyap_Software_Techn/assets/86704802/7bfa61ee-d340-41b9-8855-dec4c561744f" alt="ReLU" width="200"/> 
