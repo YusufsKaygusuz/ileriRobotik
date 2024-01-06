@@ -272,5 +272,41 @@ delay (dly);
 }
 ```
 
+<h3>IMU Sensörü ile Çift Servo Motor Konum Kontrolü</h3>
+<img src="https://github.com/YusufsKaygusuz/ileriRobotik/assets/86704802/fdd21e1c-9c13-4792-95ea-8068a023df7a" alt="ReLU" width="600"/>
+
+```ino 
+#include <Deneyap_Servo.h>
+#include "lsm6dsm.h"
+#define SERVOPIN1 D14
+#define SERVOPIN2 D9
+LSM6DSM IMU;
+Servo myservo1;
+Servo myservo2;
+float accAngleX=0.;
+float accAngleY=0.;
+int pos1 = 90;
+int pos2 = 90;
+
+void setup() {
+IMU.begin();
+myservo1.attach(SERVOPIN1);
+myservo2.attach(SERVOPIN2,1);
+}
+void loop()
+{
+accAngleX = atan(IMU.readFloatAccelX() / sqrt(pow(IMU.readFloatAccelY(), 2) +
+pow(IMU.readFloatAccelZ(), 2)+0.001)) * 180 / PI;
+
+accAngleY = atan(-1 * IMU.readFloatAccelY() / sqrt(pow(IMU.readFloatAccelX(), 2) +
+pow(IMU.readFloatAccelZ(), 2)+0.001)) * 180 / PI; pos1=90+int(accAngleX);
+
+pos2=90+int(accAngleY);
+myservo1.write(pos1);
+myservo2.write(pos2); delay(10);
+}
+
+```
+
 
 
