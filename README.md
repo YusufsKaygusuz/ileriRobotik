@@ -315,6 +315,56 @@ myservo2.write(pos2); delay(10);
 ```
 
 ## Week 5: Çift Joyistik 4 Servo Motor
+
+<h3>Motor Sürücü ile Uygulama</h3>
+
+L298N motor sürücü entegresi dijital sinyaller ile çalışan ve röle, motor gibi endüktif yükleri kontrol edebilen 4 ampere kadar akım verebilen bir motor sürücü entegresidir. Bu entegre ile 2 adet motor sürülebilmektedir. L298 sürücü kartı incelendiğinde üzerinde çeşitli giriş ve çıkışlar bulunmaktadır. Bu giriş çıkışlar aşağıdaki tabloda verilmiştir.
+
+<img src="https://github.com/YusufsKaygusuz/ileriRobotik/assets/86704802/2d8560f8-b171-4f88-a720-acf4e5b4cbce" alt="ReLU" width="600"/>
+
+```ino
+#include "lsm6dsm.h"
+#define MOT_ENA D12
+#define MOT_DIR1 D13
+#define MOT_DIR2 D14
+float angle_x=0.;
+int hiz=0;
+LSM6DSM IMU;
+
+void setup() {
+IMU.begin();
+pinMode(MOT_ENA, OUTPUT); // Motor hız kontrol pini cikis olarak ayarlandi
+pinMode(MOT_DIR1, OUTPUT); // Motor yon secme pin1 cikis olarak ayarlandi
+pinMode(MOT_DIR2, OUTPUT); // Motor yon secme pin2 cikis olarak ayarlandi
+}
+
+void loop() {
+//açı hesaplama denklemi (sqrt: karekök alma işlemi, pow: üs alma işlemi, PI: pi (π) sayısı)
+angle_x = atan(IMU.readFloatAccelX() / sqrt(pow(IMU.readFloatAccelY(), 2) + pow(IMU.readFloatAccelZ(), 2)+0.001)) * 180 / PI;
+hiz= abs(angle_x);
+if(angle_x > 0) // Ileri yon
+{
+digitalWrite(MOT_DIR1, HIGH);
+digitalWrite(MOT_DIR2, LOW);
+}
+else if(angle_x < 0) // Geri yon {
+digitalWrite(MOT_DIR1, LOW);
+digitalWrite(MOT_DIR2, HIGH);
+}
+digitalWrite(MOT_ENA, LOW);
+delay(100/hiz);
+digitalWrite(MOT_ENA, HIGH);
+delay(100/hiz);
+}
+```
+
+
+
+
+
+
+
+
 Birinci kumanda kolu (soldaki) sağa sola hareket ettirildiğinde, taban servo motoru dönme hareketini gerçekleştirecektir. Birinci kumanda kolu ileri geri hareket ettirildiğinde ise iki numaralı servo motor hareket edecektir. İkinci kumanda kolu, ileri geri hareket ettirildiğinde, 3 numaralı servo motor dönme hareketini gerçekleştirecektir. İkinci kumanda kolu sağa sola hareket ettirildiğinde ise tutucu el kapanıp açılacaktır.
 Birinci kumanda kolunun butonuna tek tıklama yapıldığında, o anki servo motor konumları hafızaya alınır (öğrenme modu). Bu her tekrarlandığında değişmiş her konum sıralı hafızaya alınır. 
 <img src="https://github.com/YusufsKaygusuz/ileriRobotik/assets/86704802/cd1d30b1-b205-4106-9203-e916e1c20a8a" alt="ReLU" width="600"/>
