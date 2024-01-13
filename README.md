@@ -32,7 +32,8 @@ Deneyap Kart'ın (muhtemelen yerel bir kart) bu kodda temel görevi, iki LDR sen
 Sağdaki LDR'den gelen değer (sensor1) ile soldaki LDR'den gelen değer (sensor2) arasındaki farka bakarak servo motorunu belirli bir açıyla hareket ettirmek.
 Özetle, bu projede LDR sensörlerinin okuduğu ışık değerlerini kullanarak servo motorunu sağa veya sola hareket ettirme amacı vardır.
 
-<img src="https://github.com/YusufsKaygusuz/ileriRobotik/assets/86704802/55cac0a9-2985-4172-8e1f-f0c0107d5f73" alt="ReLU" width="600"/>
+<p> <img src="https://github.com/YusufsKaygusuz/ileriRobotik/assets/86704802/55cac0a9-2985-4172-8e1f-f0c0107d5f73" alt="ReLU" width="600"/> </p>
+<p></p>
 
 ```ino
 #include <Deneyap_Servo.h> // Servo motor kütüphanesinin programa eklenmesi
@@ -358,12 +359,66 @@ delay(100/hiz);
 }
 ```
 
+<h3>3 Işık Sensörü ile Uygulama</h3>
 
+Program Deneyap Geliştirme Kartına yüklendiğinde motorların ışık sensörleri ve potansiyometre aktivitelerine göre davranış gösterdiği görülecektir. Şekilde de görüldüğü gibi sistemharicibirbataryaileçalıştırılıptestedilebilir. Sistemitestederkenbirelfeneriyadabir cep telefonunun flaş ışığı kullanılabilir. Sistemin davranışı (motorların ışığa karşı reaksiyonu) devredeki potansiyometre ile kalibre edilebilir.
 
+<img src="https://github.com/YusufsKaygusuz/ileriRobotik/assets/86704802/1497de6e-30f2-4f40-a129-e73a3e9a1f41" alt="ReLU" width="600"/>
+<img src="https://github.com/YusufsKaygusuz/ileriRobotik/assets/86704802/7bfceba2-cfce-461d-912a-81ae014a7b57" alt="ReLU" width="600"/>
 
+```ino
+#include <Deneyap_Servo.h>
+#define SERVOPIN1 D9
+#define SERVOPIN2 D14
+#define L1_pin A0
+#define L2_pin A1
+#define L3_pin A2
+#define Pot_pin A3
+int teta1min=0;
+int teta1max=180;
+int teta2min=0;
+int teta2max=180;
+int accAngleX=0;
+int accAngleY=0;
+int conavail=0;
+int coef, valin1, valin2, valin3; int pos1 = 0;
+int pos2 = 0;
+int clb1=0;
+int clb2=0;
+int clb3=0;
+int i=0;
+int n=10; 
+int32_t tot1=0.;
+int32_t tot2=0.;
+int32_t tot3=0.;
+Servo myservo1, myservo2;
 
+void setup() 
+{
+myservo1.attach(SERVOPIN1);
+myservo2.attach(SERVOPIN2,1);
+}
 
-
+void loop()
+{
+coef = analogRead(Pot_pin);
+valin1 = 4095-analogRead(L1_pin);
+valin2 = 4095-analogRead(L2_pin);
+valin3 = 4095-analogRead(L3_pin);
+if (i<n) { 
+i++;
+}
+tot1=int(((i-1)*tot1+valin1)/i);
+tot2=int(((i-1)*tot2+valin2)/i);
+tot3=int(((i-1)*tot3+valin3)/i);
+pos1=90+(tot2-tot1)*((2048-coef)/2048.);
+pos2=120+(0.5*(tot1+tot2)-tot3)*((2048-coef)/2048.);
+myservo1.write(pos1);
+myservo2.write(pos2);
+delay(5); 
+}
+```
+<h3>2 Joyistik 4 Servo </h3>
 
 Birinci kumanda kolu (soldaki) sağa sola hareket ettirildiğinde, taban servo motoru dönme hareketini gerçekleştirecektir. Birinci kumanda kolu ileri geri hareket ettirildiğinde ise iki numaralı servo motor hareket edecektir. İkinci kumanda kolu, ileri geri hareket ettirildiğinde, 3 numaralı servo motor dönme hareketini gerçekleştirecektir. İkinci kumanda kolu sağa sola hareket ettirildiğinde ise tutucu el kapanıp açılacaktır.
 Birinci kumanda kolunun butonuna tek tıklama yapıldığında, o anki servo motor konumları hafızaya alınır (öğrenme modu). Bu her tekrarlandığında değişmiş her konum sıralı hafızaya alınır. 
