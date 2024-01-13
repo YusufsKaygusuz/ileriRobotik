@@ -18,6 +18,8 @@
 | 📆 Week 2 | [**LDR Sensörlerinin Analog Çıkışları ile Servo Motor Kontrolü**](#week-2-ldr-sensörlerinin-analog-çıkışları-ile-servo-motor-kontrolü) |
 | 📆 Week 3 | [**Mesafe ve IMU Sensörleri ile Servo ve DC Motor Kontrolü**](#week-3-mesafe-ve-imu-sensörleri-ile-servo-ve-dc-motor-kontrolü) |
 | 📆 Week 4 | [**Çift Servo ve Joyistik ile Motor Kontrol**](#week-4-çift-servo-ve-joyistik-ile-motor-kontrol) |
+| 📆 Week 5 | [**Çift Joyistik 4 Servo Motor**](#week-5-çift-joyistik-4-servo-motor) |
+
 
 ## Week 2: LDR Sensörlerinin Analog Çıkışları ile Servo Motor Kontrolü
 
@@ -311,6 +313,11 @@ myservo2.write(pos2); delay(10);
 }
 
 ```
+
+## Week 5: Çift Joyistik 4 Servo Motor
+
+<img src="https://github.com/YusufsKaygusuz/ileriRobotik/assets/86704802/cd1d30b1-b205-4106-9203-e916e1c20a8a" alt="ReLU" width="600"/>
+
 
 
 
