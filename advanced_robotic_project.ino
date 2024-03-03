@@ -34,18 +34,12 @@ public:
   }
 
   void moveForward() {
-    digitalWrite(MOT_DIR1, HIGH);
-    digitalWrite(MOT_DIR2, LOW);
-    digitalWrite(MOT_DIR3, HIGH);
-    digitalWrite(MOT_DIR4, LOW);
+    ...
     setSpeed(true);
   }
 
   void moveLeft() {
-    digitalWrite(MOT_DIR1, HIGH);
-    digitalWrite(MOT_DIR2, HIGH);
-    digitalWrite(MOT_DIR3, HIGH);
-    digitalWrite(MOT_DIR4, LOW);
+    ...
     digitalWrite(ENA, LOW);
     digitalWrite(ENA, HIGH);
   }
@@ -59,10 +53,7 @@ public:
   }
 
   void stop() {
-    digitalWrite(MOT_DIR1, LOW);
-    digitalWrite(MOT_DIR2, LOW);
-    digitalWrite(MOT_DIR3, LOW);
-    digitalWrite(MOT_DIR4, LOW);
+    ...
     setSpeed(false);
   }
 
