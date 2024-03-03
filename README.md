@@ -620,49 +620,72 @@ if (Step>NumMemory-1) Step=0;
 <h3>Bluwtooth ile Motor Kontrolü </h3>
 
 ```ino
-#include "deneyap.h"
 #include "BluetoothSerial.h"
 
-char gelen;
-BluetootSerial SerailBT;
+char receivedChar;
+BluetoothSerial SerialBT;
+
+#define MOT_DIR1  D9
+#define MOT_DIR2  D1
+#define MOT_DIR3  D14
+#define MOT_DIR4  D13
+#define ENA  D12
+#define ENB  D8
 
 void setup() {
-  SerailBT.begin("DeneyapKart");
-  pinMode(D0, OUTPUT);
-  pinMode(D1, OUTPUT);
-  pinMode(D8, OUTPUT);
-  pinMode(D9, OUTPUT);
+  pinMode(MOT_DIR1, OUTPUT);
+  pinMode(MOT_DIR2, OUTPUT);
+  pinMode(MOT_DIR3, OUTPUT);
+  pinMode(MOT_DIR4, OUTPUT);
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
+
+  Serial.begin(115200);
+  SerialBT.begin("DeneyapKart");
+  SerialBT.println("\nDeneyapKart'a bağlanıldı.");  
 }
 
 void loop() {
-  if(SerailBT.available()){
-    gelen = SerailBT.read(){
-      if(gelen == 'F'){
-        digitalWrite(D0, HIGH);
-        digitalWrite(D1, LOW);
-        digitalWrite(D8, HIGH);
-        digitalWrite(D9, LOW);
-      }
-      else if (gelen == 'L'){
-        digitalWrite(D0, LOW);
-        digitalWrite(D1, LOW);
-        digitalWrite(D8, HIGH);
-        digitalWrite(D9, LOW);
-      }
-      else if (gelen ='R'){
-        digitalWrite(D0, HIGH);
-        digitalWrite(D1, LOW);
-        digitalWrite(D8, LOW);
-        digitalWrite(D9, LOW);
-      }
-      else {
-        digitalWrite(D0, LOW);
-        digitalWrite(D1, LOW);
-        digitalWrite(D8, LOW);
-        digitalWrite(D9, LOW);
-      }
-    }
+  if(SerialBT.available()){
+    receivedChar = SerialBT.read();
+    controlMotors(receivedChar);
   }
+}
+
+void controlMotors(char direction) {
+  switch(direction) {
+    case 'F':
+      // İleri hareket
+      digitalWrite(MOT_DIR1, HIGH);
+      digitalWrite(MOT_DIR2, LOW);
+      digitalWrite(MOT_DIR3, HIGH);
+      digitalWrite(MOT_DIR4, LOW);
+      break;
+    case 'L':
+      // Sol dönüş
+      digitalWrite(MOT_DIR1, LOW);
+      digitalWrite(MOT_DIR2, HIGH);
+      digitalWrite(MOT_DIR3, HIGH);
+      digitalWrite(MOT_DIR4, LOW);
+      break;
+    case 'R':
+      // Sağ dönüş
+      digitalWrite(MOT_DIR1, HIGH);
+      digitalWrite(MOT_DIR2, LOW);
+      digitalWrite(MOT_DIR3, LOW);
+      digitalWrite(MOT_DIR4, HIGH);
+      break;
+    default:
+      // Durma
+      digitalWrite(MOT_DIR1, LOW);
+      digitalWrite(MOT_DIR2, LOW);
+      digitalWrite(MOT_DIR3, LOW);
+      digitalWrite(MOT_DIR4, LOW);
+      break;
+  }
+  // Motor hızını ayarla (gerektiğinde)
+  digitalWrite(ENA, HIGH);
+  digitalWrite(ENB, HIGH);
 }
 ```
 
