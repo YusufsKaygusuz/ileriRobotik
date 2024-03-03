@@ -615,3 +615,54 @@ if (Step>NumMemory-1) Step=0;
 ```
 
 
+
+
+<h3>Bluwtooth ile Motor Kontrolü </h3>
+
+```ino
+#include "deneyap.h"
+#include "BluetoothSerial.h"
+
+char gelen;
+BluetootSerial SerailBT;
+
+void setup() {
+  SerailBT.begin("DeneyapKart");
+  pinMode(D0, OUTPUT);
+  pinMode(D1, OUTPUT);
+  pinMode(D8, OUTPUT);
+  pinMode(D9, OUTPUT);
+}
+
+void loop() {
+  if(SerailBT.available()){
+    gelen = SerailBT.read(){
+      if(gelen == 'F'){
+        digitalWrite(D0, HIGH);
+        digitalWrite(D1, LOW);
+        digitalWrite(D8, HIGH);
+        digitalWrite(D9, LOW);
+      }
+      else if (gelen == 'L'){
+        digitalWrite(D0, LOW);
+        digitalWrite(D1, LOW);
+        digitalWrite(D8, HIGH);
+        digitalWrite(D9, LOW);
+      }
+      else if (gelen ='R'){
+        digitalWrite(D0, HIGH);
+        digitalWrite(D1, LOW);
+        digitalWrite(D8, LOW);
+        digitalWrite(D9, LOW);
+      }
+      else {
+        digitalWrite(D0, LOW);
+        digitalWrite(D1, LOW);
+        digitalWrite(D8, LOW);
+        digitalWrite(D9, LOW);
+      }
+    }
+  }
+}
+```
+
