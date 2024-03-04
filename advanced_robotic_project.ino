@@ -88,9 +88,7 @@ void loop() {
     handleCommand(receivedChar);
     servo1.write(map(servo1_pin, 0, 4096, 0, 180));
     servo2.write(map(servo2_pin, 0, 4096, 0, 180));
-    servo3.write(map(servo3_pin, 0, 4096, 0, 180));
-    servo4.write(map(servo4_pin, 0, 4096, 0, 180));
-    servo5.write(map(servo5_pin, 0, 4096, 0, 180));
+    ...
   }
 }
 
