@@ -1,3 +1,17 @@
+/*
+loop() fonksiyonu sürekli olarak çalışır.
+Her döngüde, readRightSensor() ve readLeftSensor() metodlarıyla sağ ve sol çizgi izleyici sensörlerin değerleri okunur.
+Okunan sensör değerleri, rightSensorValue ve leftSensorValue değişkenlerine atanır.
+Ardından, bu değerler seri monitöre yazdırılır.
+if-else yapısı ile sensör değerlerine göre robotun hareketi belirlenir:
+Eğer her iki sensör de beyaz bir zemin üzerindeyse (rightSensorValue > 600 && leftSensorValue > 600), robot ileriye doğru hareket eder (robot.forward()).
+Eğer sağ sensör siyah bir çizgiyi görüyorsa ve sol sensör beyaz bir zemin üzerindeyse (rightSensorValue > 600 && leftSensorValue < 600), robot sağa doğru döner (robot.turnRight()).
+Eğer sol sensör siyah bir çizgiyi görüyorsa ve sağ sensör beyaz bir zemin üzerindeyse (rightSensorValue < 600 && leftSensorValue > 600), robot sola doğru döner (robot.turnLeft()).
+Eğer her iki sensör de siyah bir çizgiyi görüyorsa (rightSensorValue < 600 && leftSensorValue < 600), robot durur (robot.stop()).
+delay(100) fonksiyonu, her döngü arasında 0.1 saniye bekleme süresi sağlar.
+*/
+
+
 class LineFollowingRobot {
   private:
     // Pin definitions
