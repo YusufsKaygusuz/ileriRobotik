@@ -1,7 +1,7 @@
 #include "BluetoothSerial.h"
 #include <Deneyap_Servo.h>
 
-// Tanımlamalar
+// Servo nesneleri ve Bluetooth seri haberleşme nesnesi tanımlanıyor
 Servo servo1;
 Servo servo2;
 Servo servo3;
@@ -9,6 +9,7 @@ Servo servo4;
 Servo servo5;
 BluetoothSerial SerialBT;
 
+// Motor pinleri tanımlanıyor
 #define MOT_DIR1  D9
 #define MOT_DIR2  D1
 #define MOT_DIR3  D14
@@ -16,6 +17,7 @@ BluetoothSerial SerialBT;
 #define ENA  D12
 #define ENB  D8
 
+// Servo pinleri tanımlanıyor
 int servo1_pin = D0;
 int servo2_pin = D4;
 int servo3_pin = D15;
@@ -84,12 +86,12 @@ private:
 MotorController motorController; // Motor kontrolcüsü objesi oluşturuluyor
 
 void setup() {
-  // Serial port başlatılıyor
+  // Seri haberleşme başlatılıyor
   Serial.begin(115200);
   SerialBT.begin("DeneyapKart");
   SerialBT.println("\nDeneyapKart'a bağlanıldı.");
   
-  // Servo pinleri ayarlanıyor
+  // Servo nesneleri pinlere bağlanıyor
   servo1.attach(servo1_pin);
   servo2.attach(servo2_pin);
   servo3.attach(servo3_pin);
@@ -105,6 +107,7 @@ void setup() {
 }
 
 void loop() {
+  // Bluetooth verisi varsa işleniyor
   if (SerialBT.available()) {
     char receivedChar = SerialBT.read();  // Bluetooth komutu okunuyor
     handleCommand(receivedChar); // Komuta göre işlem yapılıyor
