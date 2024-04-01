@@ -623,28 +623,17 @@ if (Step>NumMemory-1) Step=0;
 Verilen kodlar, Deneyap tabanlı bir projede kablosuz kontrol sağlamak için Bluetooth kullanımını içerir. Servo motorlar ve DC motorlar kullanılarak aracın hareketi kontrol edilir. BluetoothSerial kütüphanesi, Bluetooth üzerinden seri iletişimi sağlamak için kullanılır. Deneyap_Servo kütüphanesi, servo motorların kontrolünü kolaylaştırır. MotorController sınıfı, DC motorların ileri, geri, sağa, sola hareketlerini kontrol eder. Kablosuz kontrol sağlanarak, kullanıcı Bluetooth üzerinden aracı uzaktan kontrol edebilir. Proje, Deneyap programlama yeteneklerini geliştirme imkanı sunar. Temel elektronik kavramları öğrenmek için bir fırsat sağlar, örneğin servo motor kontrolü ve motor kontrolü gibi. Projeyi genişleterek daha karmaşık sistemler oluşturma becerisi kazandırır, örneğin sensörler ekleyerek otomatikleştirilmiş bir sistem oluşturma.
 
 ```ino
-#include "BluetoothSerial.h"
 #include <Deneyap_Servo.h>
+#include <BluetoothSerial.h>
 
-Servo servo1;
-Servo servo2;
-Servo servo3;
-Servo servo4;
-Servo servo5;
 BluetoothSerial SerialBT;
 
-#define MOT_DIR1  D9
-#define MOT_DIR2  D1
-#define MOT_DIR3  D14
-#define MOT_DIR4  D13
+#define MOT_DIR1  D13
+#define MOT_DIR2  D14
+#define MOT_DIR3  D15
+#define MOT_DIR4  D8
 #define ENA  D12
-#define ENB  D8
-
-int servo1_pin = D0;
-int servo2_pin = D4;
-int servo3_pin = D15;
-int servo4_pin = A4;
-int servo5_pin = A5;
+#define ENB  D9
 
 class MotorController {
 public:
@@ -659,26 +648,45 @@ public:
   }
 
   void moveForward() {
-    ...
+    digitalWrite(MOT_DIR1, HIGH);
+    digitalWrite(MOT_DIR2, LOW);
+    digitalWrite(MOT_DIR3, HIGH);
+    digitalWrite(MOT_DIR4, LOW);
+    Serial.println("ileri gidiyor");
+    setSpeed(true);
+  }
+
+  void moveBackward() {
+    digitalWrite(MOT_DIR1, LOW);
+    digitalWrite(MOT_DIR2, HIGH);
+    digitalWrite(MOT_DIR3, LOW);
+    digitalWrite(MOT_DIR4, HIGH);
+    Serial.println("geri gidiyor");
     setSpeed(true);
   }
 
   void moveLeft() {
-    ...
-    digitalWrite(ENA, LOW);
-    digitalWrite(ENA, HIGH);
+    digitalWrite(MOT_DIR1, HIGH);
+    digitalWrite(MOT_DIR2, HIGH);
+    digitalWrite(MOT_DIR3, HIGH);
+    digitalWrite(MOT_DIR4, LOW);
+    setSpeed(true);
   }
 
   void moveRight() {
     digitalWrite(MOT_DIR1, HIGH);
     digitalWrite(MOT_DIR2, LOW);
     digitalWrite(MOT_DIR3, LOW);
-    digitalWrite(MOT_DIR4, LOW);
+    digitalWrite(MOT_DIR4, HIGH);
+    Serial.println("sağa dönüyor");
     setSpeed(true);
   }
 
   void stop() {
-    ...
+    digitalWrite(MOT_DIR1, LOW);
+    digitalWrite(MOT_DIR2, LOW);
+    digitalWrite(MOT_DIR3, LOW);
+    digitalWrite(MOT_DIR4, LOW);
     setSpeed(false);
   }
 
@@ -689,52 +697,61 @@ private:
   }
 };
 
-MotorController motorController;
+MotorController MotorController;
+
+Servo servo1;
+Servo servo2;
+Servo servo3;
+
+const int servo1Pin = D0;
+const int servo2Pin = D1;
+const int servo3Pin = D4;
+
+int receivedValues[3] = {90, 90, 90};
 
 void setup() {
   Serial.begin(115200);
-  SerialBT.begin("DeneyapKart");
+  SerialBT.begin("Deneyap1Kart");
   SerialBT.println("\nDeneyapKart'a bağlanıldı.");
-  servo1.attach(servo1_pin);
-  servo2.attach(servo2_pin);
-  servo3.attach(servo3_pin);
-  servo4.attach(servo4_pin);
-  servo5.attach(servo5_pin);
-  pinMode(servo1_pin, INPUT);
-  pinMode(servo2_pin, INPUT);
-  pinMode(servo3_pin, INPUT);
-  pinMode(servo4_pin, INPUT);
-  pinMode(servo5_pin, INPUT);
+
+  servo1.attach(servo1Pin);
+  servo2.attach(servo2Pin);
+  servo3.attach(servo3Pin);
 }
 
 void loop() {
   if (SerialBT.available()) {
-    char receivedChar = SerialBT.read();  //BLUETOOTH AÇMA
+    char receivedChar = SerialBT.read();
     handleCommand(receivedChar);
-    servo1.write(map(servo1_pin, 0, 4096, 0, 180));
-    servo2.write(map(servo2_pin, 0, 4096, 0, 180));
-    ...
+  }
+
+  if (Serial.available() >= 3) {
+    for (int i = 0; i < 3; i++) {
+      receivedValues[i] = map(Serial.read(), 0, 255, 0, 180);
+    }
+
+    servo1.write(receivedValues[0]);
+    servo2.write(receivedValues[1]);
+    servo3.write(receivedValues[2]);
   }
 }
 
 void handleCommand(char command) {
   switch (command) {
     case 'F':
-      motorController.moveForward(); 
+      MotorController.moveForward();
+      break;
+    case 'B':
+      MotorController.moveBackward();
       break;
     case 'L':
-      motorController.moveLeft();
+      MotorController.moveLeft();
       break;
     case 'R':
-      motorController.moveRight();
+      MotorController.moveRight();
       break;
     default:
-      motorController.stop();
-      servo1.write(90); // Orta konum
-      servo2.write(90); // Orta konum
-      servo3.write(90); // Orta konum
-      servo4.write(90); // Orta konum
-      servo5.write(90); // Orta konum
+      MotorController.stop();
       break;
   }
 }
